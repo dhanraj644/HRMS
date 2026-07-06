@@ -1,10 +1,12 @@
 import mongoose from "mongoose"
 
-const roleSchema = new mongoose({
+const roleSchema = new mongoose.Schema({
     name:{
         type:String,
         enum:["Admin","HR","Manager","Employee"],
-        default:"Employee"
+        default:"Employee",
+         required: true,
+         unique: true
     },
 
 },
@@ -13,4 +15,6 @@ timestamps:true,
 })
 
 
-export default Role = mongoose.model('Role',roleSchema)
+ const Role = mongoose.model('Role',roleSchema)
+
+ export default Role;

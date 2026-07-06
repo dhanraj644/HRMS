@@ -10,7 +10,7 @@ const validate = (schema) =>
 
     if(error)
     {
-        return next(new ApiError(400,error.details[0].message));
+        return next(new ApiError(400 , error.details[0].message));
     }
 
     next();

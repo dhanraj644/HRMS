@@ -5,9 +5,9 @@ const userCreateValidator = joi.object({
     userName: joi.string()
     .min(3)
     .max(30)
-    .required,
+    .required(),
 
-    email:  joi.string()
+    email:joi.string()
     .email()
     .required(),
 

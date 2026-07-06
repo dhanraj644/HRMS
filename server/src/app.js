@@ -7,8 +7,13 @@ app.use(express.json());
 app.use(express.urlencoded());
 
 
+app.get("/",(req,res)=>{
+    res.send("hello")
+})
+
 app.use("/api/v1/",Router);
 
 
 app.use(errorHandler)
+
 export default app;

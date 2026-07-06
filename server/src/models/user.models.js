@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const userSchema= new mongoose.Schema({
 
     role_id:{
-        type: Mongoose.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref:"Role",
         required:true
     },
@@ -38,3 +38,5 @@ const userSchema= new mongoose.Schema({
 })
 
 const User = mongoose.model("User",userSchema);
+
+export default User;
