@@ -5,6 +5,7 @@ import Role from "../models/role.models.js"
 import User from "../models/user.models.js"
 import bcrypt from "bcrypt"
 import mongoose from "mongoose";
+import { response } from "express";
 
 const create = asyncHandler(async (req,res) => {
 
@@ -88,16 +89,87 @@ const getUserById =asyncHandler(async (req,res) => {
 const updateUser = asyncHandler(async (req,res) => {
     
     const id = req.params.id;
-    const {userName,email,password,role_id} = req.body;
 
     if(!mongoose.Types.ObjectId.isValid(id))
     {
         throw new ApiError(409, "user id is not valid")
     }
 
-    
+    const user = await User.findById(id);
+
+    if (!user) {
+        throw new ApiError(404, "User not found.");
+    }
+
+   if (req.body.email) {
+
+        const emailExists = await User.findOne({
+            email: req.body.email,
+            _id: { $ne: id }
+        });
+
+        if (emailExists) {
+            throw new ApiError(409, "Email already exists");
+        }
+
+    }
+
+    if ( req.body.role_id) {
+
+        const role = await Role.findById(req.body.role_id);
+
+        if (!role) {
+            throw new ApiError(404, "Role not found");
+        }
+
+    }
+
+    if ( req.body.password) {
+
+        req.body.password = await bcrypt.hash(req.body.password, 10);
+
+    }
+
+    const updateUser = await User.findByIdAndUpdate(id, req.body,{new:true,runValidators: true})
+    .select("-password").populate("role_id","name")
+
+
+    res.status(200).json(
+        new ApiResponse(200,"user update successfully",updateUser)
+    )
 
 })
 
 
-export  {create,getAllUser,getUserById,updateUser}
+const updateUserStatus = asyncHandler(async (req,res) => {
+    
+    const id = req.params.id;
+
+    if(! mongoose.Types.ObjectId.isValid(id))
+    {
+        throw new ApiError(409,"user is is not valid")
+    }
+
+    const user = await User.findById(id)
+
+    if(!user)
+    {
+        throw new ApiError(404,"user not found");
+    }
+
+    const updateuser= await User.findByIdAndUpdate(id,req.body,{
+        new:true,
+        runValidators:true,
+    }).select("-password").populate("role_id","name")
+
+
+    res.status(200).json(
+        new ApiResponse(200,"user status updated",updateUser)
+    )
+
+})
+
+
+
+
+export  {create,getAllUser,getUserById,updateUser,updateUserStatus}
