@@ -47,5 +47,11 @@ const updateStatusValidator = joi.object({
         .required()
 })
 
+const updateUserPassword = joi.object({
+    password : joi.string()
+    .min(8)
+    .required()
+})
 
-export {userCreateValidator , updateUserValidator,updateStatusValidator}
+
+export {userCreateValidator , updateUserValidator,updateStatusValidator,updateUserPassword}

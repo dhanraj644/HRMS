@@ -37,26 +37,27 @@ const create = asyncHandler(async (req,res) => {
             role_id
         });
 
-        console.log(user._id)
         const createdUser = await User.findById(user._id)
-        .select("-password")
+        .select("-password -refreshToken")
         .populate("role_id", "name")
     
-    res.status(200).json(
+    return res.status(200).json(
       new ApiResponse(200,"user is created ",createdUser)  
     )
 })
 
 const getAllUser = asyncHandler(async (req,res) => {
     
-    const user = await User.find().populate("role_id");
+    const user = await User.find()
+    .select("-password -refreshToken")
+    .populate("role_id");
 
     if(user.length <1)
     {
         throw new ApiError(404,"users are not exits");
     }
 
-    res.status(200).json(
+   return res.status(200).json(
         new ApiResponse(200, "all users",user)
     )
 
@@ -69,10 +70,12 @@ const getUserById =asyncHandler(async (req,res) => {
 
     if(!mongoose.Types.ObjectId.isValid(id))
     {
-        throw new ApiError(409, "user id is not valid")
+        throw new ApiError(400, "id is not valid")
     }
 
-    const user = await User.findById(id).populate("role_id");
+    const user = await User.findById(id)
+    .select("-password -refreshToken")
+    .populate("role_id");
 
     if(!user)
     {
@@ -80,7 +83,7 @@ const getUserById =asyncHandler(async (req,res) => {
     }
 
 
-    res.status(200).json(
+  return  res.status(200).json(
         new ApiResponse(200, "user" , user)
     )
 })
@@ -92,7 +95,7 @@ const updateUser = asyncHandler(async (req,res) => {
 
     if(!mongoose.Types.ObjectId.isValid(id))
     {
-        throw new ApiError(409, "user id is not valid")
+        throw new ApiError(400, "id is not valid")
     }
 
     const user = await User.findById(id);
@@ -131,10 +134,10 @@ const updateUser = asyncHandler(async (req,res) => {
     }
 
     const updateUser = await User.findByIdAndUpdate(id, req.body,{new:true,runValidators: true})
-    .select("-password").populate("role_id","name")
+    .select("-password -refreshToken").populate("role_id","name")
 
 
-    res.status(200).json(
+   return res.status(200).json(
         new ApiResponse(200,"user update successfully",updateUser)
     )
 
@@ -147,7 +150,7 @@ const updateUserStatus = asyncHandler(async (req,res) => {
 
     if(! mongoose.Types.ObjectId.isValid(id))
     {
-        throw new ApiError(409,"user is is not valid")
+        throw new ApiError(400,"id is not valid")
     }
 
     const user = await User.findById(id)
@@ -160,16 +163,73 @@ const updateUserStatus = asyncHandler(async (req,res) => {
     const updateuser= await User.findByIdAndUpdate(id,req.body,{
         new:true,
         runValidators:true,
-    }).select("-password").populate("role_id","name")
+    }).select("-password -refreshToken").populate("role_id","name")
 
 
-    res.status(200).json(
+  return  res.status(200).json(
         new ApiResponse(200,"user status updated",updateUser)
     )
 
 })
 
+const updatePassword = asyncHandler(async (req,res) => {
+    
+    const {password}= req.body;
+    const id = req.params.id;
+
+    if(!mongoose.Types.ObjectId.isValid(id))
+    {
+        throw new ApiError(400, " id is not valid")
+    }
+
+    const user = await User.findById(id);
+
+    if(!user)
+    {
+        throw new ApiError(404, "user is not found ")
+    }
+
+    const hasspassword = bcrypt.hashSync(password,10);
 
 
+    const updateUser = await User.findByIdAndUpdate(id,{
+        password:hasspassword
+    },
+    {
+        new:true,
+        runValidators:true,
+    })
+    .select("-password -refreshToken").populate("role_id", "nmae")
 
-export  {create,getAllUser,getUserById,updateUser,updateUserStatus}
+
+    return res.status(200).json(
+        new ApiResponse(200,"password is updated successfully",updateUser)
+    )
+})
+
+const deleteUserById = asyncHandler(async (req,res) => {
+    
+    const id = req.params.id;
+
+    if(!mongoose.Types.ObjectId.isValid(id))
+    {
+        throw new ApiError(400 ,"id is not valid")
+    }
+
+    const deleteUser = await findByIdAndDelete(id);
+
+    if(!deleteUser)
+    {
+        throw new ApiError(404, "user not found")
+    }
+
+     return res.status(200).json(
+
+        new ApiResponse(200, "user is deleted successfully  ", null)
+
+    )
+
+
+})
+
+export  {create,getAllUser,getUserById,updateUser,updateUserStatus,updatePassword,deleteUserById}

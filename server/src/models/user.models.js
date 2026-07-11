@@ -31,6 +31,10 @@ const userSchema= new mongoose.Schema({
     },
     last_login:{
         type:Date,
+    },
+    refreshToken: {
+        type: String,
+        default: null
     }
 },
 {

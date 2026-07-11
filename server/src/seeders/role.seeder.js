@@ -22,7 +22,9 @@ try {
         console.log("default role created")
 } catch (error) {
     
-    console.log("role seeder error",error.message)
+    console.log("role seeder error",error.message);
+
+    throw error;
 }
 
 

@@ -7,10 +7,11 @@ const loginValidator = joi.object({
     .email()
     .required(),
 
-    password: joi.String()
+    password: joi.string()
     .min(8)
     .required()
 
 })
 
-export default loginValidator
+
+export  {loginValidator}
