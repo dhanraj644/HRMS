@@ -1,91 +1,74 @@
-import {
-  FaUsers,
-  FaBuilding,
-  FaUserTie,
-  FaCalendarCheck,
-  FaMoneyCheckAlt,
-  FaCalendarAlt,
-  FaHome,
-  FaSignOutAlt,
-} from "react-icons/fa";
-
 import { NavLink } from "react-router-dom";
+import { useSelector } from "react-redux";
+
+import { sidebarItems } from "../../config/sidebarConfig";
 
 const Sidebar = () => {
-  const menu = [
-    {
-      title: "Dashboard",
-      icon: <FaHome />,
-      path: "/dashboard",
-    },
-    {
-      title: "Users",
-      icon: <FaUsers />,
-      path: "/users",
-    },
-    {
-      title: "Departments",
-      icon: <FaBuilding />,
-      path: "/departments",
-    },
-    {
-      title: "Employees",
-      icon: <FaUserTie />,
-      path: "/employees",
-    },
-    {
-      title: "Attendance",
-      icon: <FaCalendarCheck />,
-      path: "/attendance",
-    },
-    {
-      title: "Payroll",
-      icon: <FaMoneyCheckAlt />,
-      path: "/payroll",
-    },
-    {
-      title: "Holiday",
-      icon: <FaCalendarAlt />,
-      path: "/holiday",
-    },
-  ];
 
-  return (
-    <aside className="w-64 h-screen bg-slate-900 text-white fixed left-0 top-0">
+    const user = useSelector(
+        (state) => state.auth.user
+    );
 
-      <div className="text-2xl font-bold p-6 border-b border-slate-700">
-        HRMS
-      </div>
+    return (
 
-      <div className="mt-5">
+        <aside className="w-64 h-screen bg-slate-900 text-white">
 
-        {menu.map((item) => (
-          <NavLink
-            key={item.path}
-            to={item.path}
-            className={({ isActive }) =>
-              `flex items-center gap-3 px-6 py-3 hover:bg-slate-700 ${
-                isActive ? "bg-slate-700" : ""
-              }`
-            }
-          >
-            {item.icon}
-            <span>{item.title}</span>
-          </NavLink>
-        ))}
+            <div className="text-2xl font-bold p-5">
 
-      </div>
+                HRMS
 
-      <button className="absolute bottom-5 left-6 flex items-center gap-2">
+            </div>
 
-        <FaSignOutAlt />
+            <div>
 
-        Logout
+                {
 
-      </button>
+                    sidebarItems
 
-    </aside>
-  );
+                        .filter(item =>
+                            item.roles.includes(user?.role_id?.name)
+                        )
+
+                        .map(item => {
+
+                            const Icon = item.icon;
+
+                            return (
+
+                                <NavLink
+
+                                    key={item.path}
+
+                                    to={item.path}
+
+                                    className={({ isActive }) =>
+
+                                        `flex items-center gap-3 px-5 py-3 hover:bg-slate-800
+
+                                        ${isActive ? "bg-blue-600" : ""}`
+
+                                    }
+
+                                >
+
+                                    <Icon />
+
+                                    {item.title}
+
+                                </NavLink>
+
+                            );
+
+                        })
+
+                }
+
+            </div>
+
+        </aside>
+
+    );
+
 };
 
 export default Sidebar;

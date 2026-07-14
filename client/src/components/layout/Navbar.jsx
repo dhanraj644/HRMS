@@ -1,6 +1,10 @@
 import { FaBell, FaUserCircle } from "react-icons/fa";
+import { useSelector } from "react-redux";
 
 const Navbar = () => {
+
+  const {user} =  useSelector((state)=>state.auth)
+
   return (
     <header className="h-16 bg-white shadow flex items-center justify-between px-8">
 
@@ -17,8 +21,8 @@ const Navbar = () => {
           <FaUserCircle className="text-3xl" />
 
           <div>
-            <p className="font-semibold">Dhanraj</p>
-            <p className="text-sm text-gray-500">Admin</p>
+            <p className="font-semibold">{user?.userName }</p>
+            <p className="text-sm text-gray-500">{user?.role_id?.name}</p>
           </div>
 
         </div>

@@ -33,6 +33,7 @@ const Login = () => {
 
             const response = await login(data);
 
+            // console.log(response.data.data.userData)
             dispatch(loginSuccess(response.data.data));
 
             toast.success("Login Successful");
