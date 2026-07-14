@@ -12,7 +12,7 @@ const validate = (schema) =>
     {
         return next(new ApiError(400 , error.details[0].message));
     }
-
+    
     next();
     }
 }
