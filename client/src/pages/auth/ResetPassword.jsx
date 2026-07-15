@@ -1,57 +1,53 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate, Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import {
+  Lock,
   Eye,
   EyeOff,
-  Mail,
-  Lock,
   Building2,
+  ArrowLeft,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
 
-import { login } from "../../services/auth.service";
-import { loginSuccess } from "../../redux/auth/authSlice";
-
-const Login = () => {
-  const dispatch = useDispatch();
+const ResetPassword = () => {
   const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm();
 
+  const password = watch("password");
+
   const onSubmit = async (data) => {
     try {
-      const response = await login(data);
+      console.log(data);
 
-      dispatch(loginSuccess(response.data.data));
+      // await resetPassword(data)
 
-      toast.success("Login Successful");
+      toast.success("Password Reset Successfully");
 
-      navigate("/dashboard");
+      navigate("/login");
     } catch (error) {
-      toast.error(
-        error.response?.data?.message || "Login Failed"
-      );
+      toast.error("Unable to reset password");
     }
   };
 
   return (
     <div className="min-h-screen grid lg:grid-cols-2 bg-slate-100">
 
-      {/* LEFT SIDE */}
+      {/* LEFT */}
 
       <div className="hidden lg:flex flex-col justify-center items-center bg-gradient-to-br from-blue-700 to-indigo-800 text-white p-12">
 
@@ -64,28 +60,23 @@ const Login = () => {
         </h1>
 
         <p className="text-lg text-center max-w-md opacity-90">
-          Human Resource Management System
-
-          <br /><br />
-
-          Manage Employees, Attendance, Payroll,
-          Leave Requests and Departments in one place.
+          Create a strong password to keep your account secure.
         </p>
 
       </div>
 
-      {/* RIGHT SIDE */}
+      {/* RIGHT */}
 
       <div className="flex justify-center items-center p-6">
 
         <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-8">
 
           <h2 className="text-3xl font-bold text-center">
-            Welcome Back 👋
+            Reset Password
           </h2>
 
           <p className="text-gray-500 text-center mt-2 mb-8">
-            Login to your account
+            Enter your new password
           </p>
 
           <form
@@ -93,64 +84,36 @@ const Login = () => {
             className="space-y-5"
           >
 
-            {/* EMAIL */}
-
-            <div>
-
-              <Label>Email</Label>
-
-              <div className="relative mt-2">
-
-                <Mail
-                  size={18}
-                  className="absolute left-3 top-3 text-gray-400"
-                />
-
-                <Input
-                  type="email"
-                  placeholder="Enter your email"
-                  className="pl-10 h-11"
-                  {...register("email", {
-                    required: "Email is required",
-                  })}
-                />
-
-              </div>
-
-              <p className="text-red-500 text-sm mt-1">
-                {errors.email?.message}
-              </p>
-
-            </div>
-
             {/* PASSWORD */}
 
             <div>
 
-              <Label>Password</Label>
+              <Label>New Password</Label>
 
               <div className="relative mt-2">
 
                 <Lock
-                  size={18}
                   className="absolute left-3 top-3 text-gray-400"
+                  size={18}
                 />
 
                 <Input
                   type={showPassword ? "text" : "password"}
-                  placeholder="Enter your password"
+                  placeholder="Enter new password"
                   className="pl-10 pr-10 h-11"
                   {...register("password", {
                     required: "Password is required",
+                    minLength: {
+                      value: 8,
+                      message: "Minimum 8 characters",
+                    },
                   })}
                 />
 
                 <button
                   type="button"
-                  onClick={() =>
-                    setShowPassword(!showPassword)
-                  }
-                  className="absolute right-3 top-3 text-gray-500"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-3"
                 >
                   {showPassword ? (
                     <EyeOff size={18} />
@@ -167,41 +130,79 @@ const Login = () => {
 
             </div>
 
-            {/* REMEMBER */}
+            {/* CONFIRM PASSWORD */}
 
-            <div className="flex justify-between items-center">
+            <div>
 
-              <div className="flex items-center gap-2">
+              <Label>Confirm Password</Label>
 
-                <Checkbox id="remember" />
+              <div className="relative mt-2">
 
-                <Label htmlFor="remember">
-                  Remember Me
-                </Label>
+                <Lock
+                  className="absolute left-3 top-3 text-gray-400"
+                  size={18}
+                />
+
+                <Input
+                  type={
+                    showConfirmPassword ? "text" : "password"
+                  }
+                  placeholder="Confirm password"
+                  className="pl-10 pr-10 h-11"
+                  {...register("confirmPassword", {
+                    required: "Confirm Password is required",
+                    validate: (value) =>
+                      value === password ||
+                      "Passwords do not match",
+                  })}
+                />
+
+                <button
+                  type="button"
+                  onClick={() =>
+                    setShowConfirmPassword(
+                      !showConfirmPassword
+                    )
+                  }
+                  className="absolute right-3 top-3"
+                >
+                  {showConfirmPassword ? (
+                    <EyeOff size={18} />
+                  ) : (
+                    <Eye size={18} />
+                  )}
+                </button>
 
               </div>
 
-              <Link
-                to="/forgot-password"
-                className="text-blue-600 text-sm hover:underline"
-              >
-                Forgot Password?
-              </Link>
+              <p className="text-red-500 text-sm mt-1">
+                {errors.confirmPassword?.message}
+              </p>
 
             </div>
-
-            {/* BUTTON */}
 
             <Button
               className="w-full h-11"
               disabled={isSubmitting}
             >
               {isSubmitting
-                ? "Logging In..."
-                : "Login"}
+                ? "Updating..."
+                : "Reset Password"}
             </Button>
 
           </form>
+
+          <div className="mt-6 text-center">
+
+            <Link
+              to="/login"
+              className="inline-flex items-center gap-2 text-blue-600 hover:underline"
+            >
+              <ArrowLeft size={16} />
+              Back to Login
+            </Link>
+
+          </div>
 
           <p className="text-center text-gray-400 text-sm mt-8">
             © 2026 HRMS. All Rights Reserved.
@@ -215,4 +216,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default ResetPassword;

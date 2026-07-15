@@ -3,7 +3,6 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-
 const dbconection = async () => {
     try {
         
@@ -12,7 +11,7 @@ const dbconection = async () => {
         console.log("database is conected");
 
     } catch (error) {
-        console.log("ERROR: database is not conected");
+        console.log("ERROR: database is not conected",error);
         process.exit(1);
     }
 }

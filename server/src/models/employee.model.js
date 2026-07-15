@@ -94,7 +94,7 @@ employeeType:{
     lowercase:true,
 
     enum:[
-     "full-time",
+    "full-time",
     "part-time",
     "contract",
     "intern",

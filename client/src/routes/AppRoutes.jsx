@@ -1,6 +1,8 @@
 import { Routes, Route } from "react-router-dom";
 
 import Login from "../pages/auth/Login";
+import ForgotPassword from "../pages/auth/ForgotPassword"
+import ResetPassword from "../pages/auth/ResetPassword"
 import Dashboard from "../pages/dashboard/Dashboard";
 import UserList from "../pages/users/UserList";
 import Unauthorized from "../pages/unauthorized/Unauthorized";
@@ -20,6 +22,10 @@ const AppRoutes = () => {
 
             <Route element={<PublicRoute />}>
                 <Route path="/login" element={<Login />} />
+                <Route path="/forgot-password" element={<ForgotPassword />} />
+                <Route path="/reset-password" element={<ResetPassword />} />
+
+
             </Route>
 
             {/* Protected Routes */}
