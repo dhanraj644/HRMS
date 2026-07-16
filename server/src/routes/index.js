@@ -1,5 +1,6 @@
 import userRouter from "./user.routes.js";
 import authRouter from "./auth.routes.js"
+import departmentRouter from "./department.routes.js"
 import express from "express";
 
 const Router = express.Router()
@@ -7,5 +8,8 @@ const Router = express.Router()
 Router.use('/auth', authRouter);
 
 Router.use('/user', userRouter);
+
+Router.use('/department', departmentRouter);
+
 
 export default Router;

@@ -7,6 +7,8 @@ const departmentSchema = new mongoose.Schema(
       required: true,
       trim: true,
       unique: true,
+      minlength: 2,
+      maxlength: 100,
     },
 
     departmentCode: {
@@ -14,6 +16,9 @@ const departmentSchema = new mongoose.Schema(
       required: true,
       trim: true,
       unique: true,
+      uppercase: true,
+      minlength: 2,
+      maxlength: 100,
     },
 
     description: {
@@ -26,11 +31,19 @@ const departmentSchema = new mongoose.Schema(
       enum: ["Active", "Inactive"],
       default: "Active",
     },
+    isDeleted: {
+    type: Boolean,
+    default: false,
+    },
   },
   {
     timestamps: true,
   }
 );
+
+departmentSchema.index({
+  status: 1,
+});
 
 const Department = mongoose.model("Department", departmentSchema);
 

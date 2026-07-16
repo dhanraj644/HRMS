@@ -29,6 +29,7 @@ app.use("/api/v1/",Router);
 app.use((req,res)=>{
     res.status(404).json({msg:"api url not found"})
 })
+
 app.use(errorHandler)
 
 export default app;
