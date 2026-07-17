@@ -61,7 +61,7 @@ const getDesignationById= asyncHandler(async (req,res) => {
         throw new ApiError(404,"designation not found")
     }
 
-    returnres.status(200).json(
+    return res.status(200).json(
         new ApiResponse(200,"designations",designation)
     )
 })
@@ -72,7 +72,7 @@ const updateDesignation = asyncHandler(async (req,res) => {
     const {designationName,department_id,description,status} = req.body;
 
 
-    const designation = await findById(req.params.id)
+    const designation = await Designation.findById(req.params.id)
 
     if(!designation)
     {
@@ -132,22 +132,23 @@ const deleteDesignationById = asyncHandler(async (req,res) => {
         throw new ApiError(404,"designation not found")
     }
 
+       await Designation.findByIdAndDelete(req.params.id);
 
     return res.status(200).json(
-        new ApiResponse(200,"designation is deleted successfully",[])
+        new ApiResponse(200,"designation is deleted successfully",)
     )
 })
 
 
 const getDesignationByDepartmentId = asyncHandler(async (req,res) => {
     
-    const {departmentId} = req.params.departmentId;
+    const {departmentId} = req.params;
 
 
     const designation = await Designation.find({department_id:departmentId,status:"Active"})
     .populate("department_id", 'departmentName');
 
-
+    console.log(designation)
     return res.status(200).json(
         new ApiResponse(200, "Designation By department", designation)
     )

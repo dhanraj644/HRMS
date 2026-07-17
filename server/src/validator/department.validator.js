@@ -1,54 +1,77 @@
-import joi from "joi";
+import Joi from "joi";
 
-export const createDepartmentValidator = joi.object({
-  departmentName: joi.string()
+export const createDepartmentValidator = Joi.object({
+  departmentName: Joi.string()
+    .trim()
+    .min(2)
+    .max(100)
     .required()
     .messages({
       "string.empty": "Department Name cannot be empty",
+      "string.min": "Department Name must be at least 2 characters",
+      "string.max": "Department Name cannot exceed 100 characters",
       "any.required": "Department Name is required",
     }),
 
-  departmentCode: joi.string()
+  departmentCode: Joi.string()
+    .trim()
+    .uppercase()
+    .min(2)
+    .max(10)
     .required()
     .messages({
       "string.empty": "Department Code cannot be empty",
+      "string.min": "Department Code must be at least 2 characters",
+      "string.max": "Department Code cannot exceed 10 characters",
       "any.required": "Department Code is required",
     }),
 
-  description: joi.string()
-    .required()
-    .messages({
-      "string.empty": "Description cannot be empty",
-      "any.required": "Description is required",
-    }),
+  description: Joi.string()
+    .trim()
+    .allow("")
+    .optional(),
 
-  status: joi.string()
+  status: Joi.string()
     .valid("Active", "Inactive")
-    .required()
+    .default("Active")
     .messages({
-      "string.empty": "Status cannot be empty",
-      "any.required": "Status is required",
       "any.only": "Status must be Active or Inactive",
     }),
 });
 
-export const updateDepartmentValidator = joi.object({
-  departmentName: joi.string().messages({
-    "string.empty": "Department Name cannot be empty",
-  }),
+export const updateDepartmentValidator = Joi.object({
+  departmentName: Joi.string()
+    .trim()
+    .min(2)
+    .max(100)
+    .messages({
+      "string.empty": "Department Name cannot be empty",
+      "string.min": "Department Name must be at least 2 characters",
+      "string.max": "Department Name cannot exceed 100 characters",
+    }),
 
-  departmentCode: joi.string().messages({
-    "string.empty": "Department Code cannot be empty",
-  }),
+  departmentCode: Joi.string()
+    .trim()
+    .uppercase()
+    .min(2)
+    .max(10)
+    .messages({
+      "string.empty": "Department Code cannot be empty",
+      "string.min": "Department Code must be at least 2 characters",
+      "string.max": "Department Code cannot exceed 10 characters",
+    }),
 
-  description: joi.string().messages({
-    "string.empty": "Description cannot be empty",
-  }),
+  description: Joi.string()
+    .trim()
+    .allow(""),
 
-  status: joi.string()
+  status: Joi.string()
     .valid("Active", "Inactive")
     .messages({
-      "string.empty": "Status cannot be empty",
       "any.only": "Status must be Active or Inactive",
     }),
+})
+.min(1)
+.messages({
+  "object.min": "At least one field is required to update.",
 });
