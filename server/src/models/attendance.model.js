@@ -15,10 +15,12 @@ const attendanceSchema = new mongoose.Schema(
 
     checkIn: {
       type: Date,
+      default: null,
     },
 
     checkOut: {
       type: Date,
+      default: null,
     },
 
     workingHours: {
@@ -46,10 +48,34 @@ const attendanceSchema = new mongoose.Schema(
     remarks: {
       type: String,
       trim: true,
+      default: "",
+    },
+
+    createdBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      default: null,
+    },
+
+    updatedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      default: null,
     },
   },
   {
     timestamps: true,
+  }
+);
+
+// One attendance per employee per day
+attendanceSchema.index(
+  {
+    employee_id: 1,
+    date: 1,
+  },
+  {
+    unique: true,
   }
 );
 

@@ -5,9 +5,9 @@ const roleSchema = new mongoose.Schema({
         type:String,
         enum:["Admin","HR","Manager","Employee"],
         default:"Employee",
-         required: true,
+        required: true,
          unique: true
-    },
+       },
 
 },
 {
