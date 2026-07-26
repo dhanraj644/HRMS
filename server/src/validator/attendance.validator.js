@@ -83,18 +83,3 @@ export const updateAttendanceValidator = Joi.object({
 .messages({
     "object.min": "At least one field is required."
 });
-
-
-export const attendanceIdValidator = Joi.object({
-
-    id: Joi.string()
-        .hex()
-        .length(24)
-        .required()
-        .messages({
-            "string.hex": "Invalid Attendance ID.",
-            "string.length": "Invalid Attendance ID.",
-            "any.required": "Attendance ID is required."
-        })
-
-});

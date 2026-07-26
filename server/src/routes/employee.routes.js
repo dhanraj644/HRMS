@@ -1,8 +1,8 @@
 import  {createEmployee,getEmployee,getEmployeeById,
     updateEmployeeData,deleteEmployee,getMyProfile,updateMyProfile} 
 from "../controllers/employee.controller.js";
-
-import validate from "../middlewares/validation.middleware.js"
+import {validate,validateParams}  from "../middlewares/validation.middleware.js";
+import {objectIdValidator} from "../validator/common.validator.js"
 import {createEmployeeValidator,updateEmployeeValidator,updateMyProfileValidator} from "../validator/employee.validator.js"
 
 import express from "express";
@@ -14,15 +14,15 @@ employeeRouter.post("/",validate(createEmployeeValidator),createEmployee);
 
 employeeRouter.get("/",getEmployee);
 
-employeeRouter.get("/:id",getEmployeeById);
+employeeRouter.get("/:id",validateParams(objectIdValidator),getEmployeeById);
 
 employeeRouter.get("/profile/me",getMyProfile);
 
-employeeRouter.patch("/:id",validate(updateEmployeeValidator),updateEmployeeData);
+employeeRouter.patch("/:id",validateParams(objectIdValidator),validate(updateEmployeeValidator),updateEmployeeData);
 
 employeeRouter.patch("/profile/me",validate(updateMyProfileValidator),updateMyProfile);
 
-employeeRouter.delete("/:id",deleteEmployee);
+employeeRouter.delete("/:id",validateParams(objectIdValidator),deleteEmployee);
 
 
 export default employeeRouter;

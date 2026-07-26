@@ -1,6 +1,6 @@
 import ApiError from "../utils/ApiError.js"
 
-const validate = (schema) =>
+export const validate = (schema) =>
 {
 
     return (req,res,next)=>
@@ -17,4 +17,19 @@ const validate = (schema) =>
     }
 }
 
-export default validate
+
+export const validateParams = (schema) => {
+
+    return (req, res, next) => {
+
+        const { error } = schema.validate(req.params);
+
+        if (error) {
+            throw new ApiError(400, error.details[0].message);
+        }
+
+        next();
+
+    };
+
+};

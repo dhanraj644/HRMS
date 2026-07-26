@@ -2,21 +2,23 @@ import {create,getAllUser,getUserById,updateUser,updateUserStatus,updatePassword
 import auth from "../middlewares/auth.middleare.js"
 import express from 'express'
 import {userCreateValidator , updateUserValidator,updateStatusValidator,updateUserPasswordValidator} from '../validator/user.validator.js'
-import validate from "../middlewares/validation.middleware.js";
+import {validate,validateParams}  from "../middlewares/validation.middleware.js";
+import {objectIdValidator} from "../validator/common.validator.js"
+
 const userRouter = express.Router()
 
 userRouter.post('/',validate(userCreateValidator),create);
 
 userRouter.get('/', getAllUser);
 
-userRouter.get('/:id',auth, getUserById);
+userRouter.get('/:id',auth,validateParams(objectIdValidator), getUserById);
 
-userRouter.put('/:id',auth,validate(updateUserValidator), updateUser);
+userRouter.put('/:id',auth,validateParams(objectIdValidator),validate(updateUserValidator), updateUser);
 
-userRouter.patch('/:id/status',validate(updateStatusValidator),updateUserStatus)
+userRouter.patch('/:id/status',validateParams(objectIdValidator),validate(updateStatusValidator),updateUserStatus)
 
-userRouter.patch('/:id/password',validate(updateUserPasswordValidator),updatePassword)
+userRouter.patch('/:id/password',validateParams(objectIdValidator),validate(updateUserPasswordValidator),updatePassword)
 
-userRouter.delete("/:id/delete",deleteUserById)
+userRouter.delete("/:id/delete",validateParams(objectIdValidator),deleteUserById)
 
 export default userRouter

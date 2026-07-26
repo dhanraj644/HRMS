@@ -4,7 +4,8 @@ import {createDesignation,getDesignation,getDesignationById,
 import express from "express";
 
 import {createDesignationValidator,updateDesignationValidator} from "../validator/designation.validator.js"
-import validate from "../middlewares/validation.middleware.js";
+import {validate,validateParams}  from "../middlewares/validation.middleware.js";
+import {objectIdValidator} from "../validator/common.validator.js"
 
 const designationRouter = express.Router()
 
@@ -14,11 +15,11 @@ designationRouter.get("/", getDesignation);
 
 designationRouter.get("/department/:departmentId", getDesignationByDepartmentId);
 
-designationRouter.get("/:id", getDesignationById);
+designationRouter.get("/:id",validateParams(objectIdValidator), getDesignationById);
 
-designationRouter.patch("/:id",validate(updateDesignationValidator),updateDesignation);
+designationRouter.patch("/:id",validateParams(objectIdValidator),validate(updateDesignationValidator),updateDesignation);
 
-designationRouter.delete("/:id", deleteDesignationById);
+designationRouter.delete("/:id",validateParams(objectIdValidator), deleteDesignationById);
 
 
 

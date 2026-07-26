@@ -1,6 +1,6 @@
 import {Login,LogOut,refreshAccessToken,getMe} from "../controllers/auth.controller.js";
 import { loginValidator} from "../validator/auth.validator.js";
-import validate from "../middlewares/validation.middleware.js";
+import {validate}  from "../middlewares/validation.middleware.js";
 import auth from "../middlewares/auth.middleare.js"
 import express from "express";
 
