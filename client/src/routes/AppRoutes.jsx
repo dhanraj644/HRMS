@@ -21,11 +21,9 @@ const AppRoutes = () => {
             {/* Public Routes */}
 
             <Route element={<PublicRoute />}>
-                <Route path="/login" element={<Login />} />
+                <Route path="/" element={<Login />} />
                 <Route path="/forgot-password" element={<ForgotPassword />} />
                 <Route path="/reset-password" element={<ResetPassword />} />
-
-
             </Route>
 
             {/* Protected Routes */}

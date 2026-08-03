@@ -6,8 +6,6 @@ dotenv.config();
 
 const PORT= process.env.PORT||5000;
 
-
-
 const startserver = async () => {
     
     try {
@@ -22,7 +20,7 @@ const startserver = async () => {
         
     } catch (error) {
         
-        console.log(error);
+        console.error("Server startup failed:", error);
         process.exit(1);
     }
 }

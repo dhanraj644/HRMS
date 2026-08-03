@@ -6,14 +6,13 @@ import {objectIdValidator} from "../validator/common.validator.js"
 const departmentRouter = express.Router();
 
 
-
-departmentRouter.post("/",validator(createDepartmentValidator),addDepartment);
+departmentRouter.post("/",validate(createDepartmentValidator),addDepartment);
 
 departmentRouter.get("/", getAllDepartment);
 
 departmentRouter.get("/:id",validateParams(objectIdValidator), getDepartmentById);
 
-departmentRouter.patch("/:id",validateParams(objectIdValidator),validator(updateDepartmentValidator), updateDepartmentById);
+departmentRouter.patch("/:id",validateParams(objectIdValidator),validate(updateDepartmentValidator), updateDepartmentById);
 
 departmentRouter.delete("/:id",validateParams(objectIdValidator), deleteDepartmentById);
 

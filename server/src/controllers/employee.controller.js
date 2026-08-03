@@ -2,7 +2,7 @@ import asyncHandler from "../utils/asyncHandler.js"
 import ApiResponse from "../utils/ApiResponse.js";
 import ApiError from "../utils/ApiError.js"
 import Employee from "../models/employee.model.js"
-import User from "../models/user.model.js";
+import User from "../models/user.models.js";
 import Department from "../models/department.model.js";
 import Designation from "../models/designation.model.js";
 
