@@ -1,4 +1,5 @@
-import {Login,LogOut,refreshAccessToken,getMe} from "../controllers/auth.controller.js";
+import {Login, LogOut, refreshAccessToken, getMe, changePassword} from "../controllers/auth.controller.js";
+
 import { loginValidator} from "../validator/auth.validator.js";
 import {validate}  from "../middlewares/validation.middleware.js";
 import auth from "../middlewares/auth.middleare.js"
@@ -14,6 +15,8 @@ authRouter.post("/logout",auth,LogOut);
 authRouter.post("/refresh-token",refreshAccessToken);
 
 authRouter.get("/me",auth,getMe);
+
+authRouter.patch("/change-password", auth, changePassword);
 
 
 

@@ -8,18 +8,18 @@ import {
     deleteLeaveType
 } from "../controllers/leaveType.controller.js";
 
-import  auth  from "../middlewares/auth.middleare.js";
-import  {authorize} from "../middlewares/autherize.middleware.js";
-import {createLeaveTypeValidator,updateLeaveTypeValidator,leaveTypeIdValidator} from "../validator/leaveType.validator.js"
-import {validate,validateParams} from "../middlewares/validation.middleware.js";
-import {objectIdValidator} from "../validator/common.validator.js"
+import auth from "../middlewares/auth.middleare.js";
+import { authorize } from "../middlewares/autherize.middleware.js";
+import { createLeaveTypeValidator, updateLeaveTypeValidator } from "../validator/leaveType.validator.js"
+import { validate, validateParams } from "../middlewares/validation.middleware.js";
+import { objectIdValidator } from "../validator/common.validator.js"
 const router = express.Router();
 
 router.post(
     "/",
     auth,
     authorize("Admin", "HR"),
-    validate(createLeaveType),
+    validate(createLeaveTypeValidator),
     createLeaveType
 );
 

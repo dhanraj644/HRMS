@@ -158,8 +158,8 @@ const getEmployee = asyncHandler(async (req,res) => {
       .sort({ createdAt: -1 });
 
 
- return res.statsu(200).json(
-    new ApiResponse(200,`toatal employees`, employee)
+ return res.status(200).json(
+    new ApiResponse(200,`total employees`, employee)
  )
 
 })
@@ -268,7 +268,7 @@ const updateEmployeeData = asyncHandler(async (req,res) => {
       .populate("updatedBy", "userName");
 
 
-      return res.statsu(200).json(
+      return res.status(200).json(
 
         new ApiResponse(200, "employee updated successfully", updatedEmployee)
       )
@@ -318,7 +318,7 @@ const getMyProfile = asyncHandler(async (req,res) => {
     }
 
 
-    return res.statsu(200).json(
+    return res.status(200).json(
         new ApiResponse(200,"employee profile.",employee)
     )
 })

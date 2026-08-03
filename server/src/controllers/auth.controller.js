@@ -161,32 +161,25 @@ const refreshAccessToken = async (req,res) => {
 
 const changePassword = asyncHandler(async (req,res) => {
     
-    const {oldPassword,NewPassword} = req.body;
+    const {oldPassword, newPassword} = req.body;
 
-    const user= await User.findById(req.user._id);
+    const user = await User.findById(req.user._id);
 
-    if(!user)
-    {
+    if(!user) {
         throw new ApiError(404, "user not found")
     }
 
-    
-    if(!bcrypt.compareSync(oldPassword,user.password))
-    {
-        throw new ApiError(401, "password not matched")
+    if(!bcrypt.compareSync(oldPassword, user.password)) {
+        throw new ApiError(401, "Old password is incorrect")
     }
 
+    const hashedPassword = bcrypt.hashSync(newPassword, 10);
 
-    const hasspassword = bcrypt.hashSync(NewPassword, 10);
+    user.password = hashedPassword;
+    await user.save();
 
-
-    user.password=hasspassword;
-    user.save();
-
-
-   return res.statsu(200).json(
-
-        new ApiResponse(200 ,"password is changed",[])
+    return res.status(200).json(
+        new ApiResponse(200, "Password changed successfully", null)
     )
 
 })
@@ -194,4 +187,4 @@ const changePassword = asyncHandler(async (req,res) => {
 
 
 
-export  {Login,LogOut,refreshAccessToken,getMe}
+export { Login, LogOut, refreshAccessToken, getMe, changePassword }
